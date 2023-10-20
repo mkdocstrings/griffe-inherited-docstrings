@@ -1,0 +1,8 @@
+
+on:
+    push:
+jobs:
+    all:
+        runs-on: ubuntu-latest
+        steps:
+        - run: echo "Nothing to do!"
