@@ -1,0 +1,22 @@
+# Changes here will be overwritten by Copier
+_commit: 1.1.1
+_src_path: gh:pawamoy/copier-pdm
+author_email: pawamoy@pm.me
+author_fullname: Timothée Mazzucotelli
+author_username: pawamoy
+copyright_date: '2023'
+copyright_holder: Timothée Mazzucotelli
+copyright_holder_email: pawamoy@pm.me
+copyright_license: ISC License
+insiders: true
+insiders_repository_name: griffe-inherited-docstrings
+project_description: Griffe extension for inheriting docstrings.
+project_name: Griffe Inherited Docstrings
+public_release: false
+python_package_command_line_name: ''
+python_package_distribution_name: griffe-inherited-docstrings
+python_package_import_name: griffe_inherited_docstrings
+repository_name: griffe-inherited-docstrings
+repository_namespace: mkdocstrings
+repository_provider: github.com
+
