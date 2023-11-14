@@ -213,7 +213,11 @@ def docs_deploy(ctx: Context) -> None:
             ctx.run(lambda: False, title="Not deploying docs without Material for MkDocs Insiders!")
         origin = ctx.run("git config --get remote.origin.url", silent=True)
         if "pawamoy-insiders/griffe-inherited-docstrings" in origin:
-            ctx.run("git remote add upstream git@github.com:mkdocstrings/griffe-inherited-docstrings", silent=True, nofail=True)
+            ctx.run(
+                "git remote add upstream git@github.com:mkdocstrings/griffe-inherited-docstrings",
+                silent=True,
+                nofail=True,
+            )
             ctx.run(
                 mkdocs.gh_deploy(remote_name="upstream", force=True),
                 title="Deploying documentation",
