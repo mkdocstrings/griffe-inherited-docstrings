@@ -27,7 +27,9 @@ classifiers = [
     "Topic :: Utilities",
     "Typing :: Typed",
 ]
-dependencies = []
+dependencies = [
+    "griffe>=0.38",
+]
 
 [project.urls]
 Homepage = "https://mkdocstrings.github.io/griffe-inherited-docstrings"
