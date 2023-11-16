@@ -9,3 +9,28 @@ Griffe extension for inheriting docstrings.
 ## Installation
 
 See [Insiders installation](https://mkdocstrings.github.io/mkdocstrings/insiders/installation.md).
+
+## Usage
+
+With Python:
+
+```python
+import griffe
+
+griffe.load("...", extensions=griffe.load_extensions(["griffe_inherited_docstrings"]))
+```
+
+With MkDocs and mkdocstrings:
+
+```yaml
+plugins:
+- mkdocstrings:
+    handlers:
+      python:
+        options:
+          extensions:
+          - griffe_inherited_docstrings
+```
+
+The extension will iterate on every class and their members
+to set docstrings from parent classes when they are not already defined.
