@@ -1,0 +1,7 @@
+goals:
+  500:
+    name: PlasmaVac User Guide
+    features:
+    - name: "[Project] Griffe extension for inheriting docstrings"
+      ref: /
+      since: 2023/11/14
