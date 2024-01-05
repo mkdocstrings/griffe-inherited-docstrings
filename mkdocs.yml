@@ -26,11 +26,6 @@ nav:
   - Contributing: contributing.md
   - Code of Conduct: code_of_conduct.md
   - Coverage report: coverage.md
-- Insiders:
-  - insiders/index.md
-  - Getting started:
-    - Installation: insiders/installation.md
-    - Changelog: insiders/changelog.md
 - Author's website: https://pawamoy.github.io/
 
 theme:
@@ -77,7 +72,6 @@ theme:
 extra_css:
 - css/material.css
 - css/mkdocstrings.css
-- css/insiders.css
 
 markdown_extensions:
 - attr_list

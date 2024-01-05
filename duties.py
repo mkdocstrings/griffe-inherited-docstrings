@@ -51,23 +51,9 @@ def changelog(ctx: Context) -> None:
     Parameters:
         ctx: The context instance (passed automatically).
     """
-    from git_changelog.cli import build_and_render
+    from git_changelog.cli import main as git_changelog
 
-    git_changelog = lazy(build_and_render, name="git_changelog")
-    ctx.run(
-        git_changelog(
-            repository=".",
-            output="CHANGELOG.md",
-            convention="angular",
-            template="keepachangelog",
-            parse_trailers=True,
-            parse_refs=False,
-            sections=["build", "deps", "feat", "fix", "refactor"],
-            bump="auto",
-            in_place=True,
-        ),
-        title="Updating changelog",
-    )
+    ctx.run(git_changelog, args=[[]], title="Updating changelog")
 
 
 @duty(pre=["check_quality", "check_types", "check_docs", "check_dependencies", "check-api"])
@@ -211,23 +197,7 @@ def docs_deploy(ctx: Context) -> None:
     with material_insiders() as insiders:
         if not insiders:
             ctx.run(lambda: False, title="Not deploying docs without Material for MkDocs Insiders!")
-        origin = ctx.run("git config --get remote.origin.url", silent=True)
-        if "pawamoy-insiders/griffe-inherited-docstrings" in origin:
-            ctx.run(
-                "git remote add upstream git@github.com:mkdocstrings/griffe-inherited-docstrings",
-                silent=True,
-                nofail=True,
-            )
-            ctx.run(
-                mkdocs.gh_deploy(remote_name="upstream", force=True),
-                title="Deploying documentation",
-            )
-        else:
-            ctx.run(
-                lambda: False,
-                title="Not deploying docs from public repository (do that from insiders instead!)",
-                nofail=True,
-            )
+        ctx.run(mkdocs.gh_deploy(), title="Deploying documentation")
 
 
 @duty
@@ -252,12 +222,6 @@ def release(ctx: Context, version: str) -> None:
         ctx: The context instance (passed automatically).
         version: The new version number to use.
     """
-    origin = ctx.run("git config --get remote.origin.url", silent=True)
-    if "pawamoy-insiders/griffe-inherited-docstrings" in origin:
-        ctx.run(
-            lambda: False,
-            title="Not releasing from insiders repository (do that from public repo instead!)",
-        )
     ctx.run("git add pyproject.toml CHANGELOG.md", title="Staging files", pty=PTY)
     ctx.run(["git", "commit", "-m", f"chore: Prepare release {version}"], title="Committing changes", pty=PTY)
     ctx.run(f"git tag {version}", title="Tagging commit", pty=PTY)
