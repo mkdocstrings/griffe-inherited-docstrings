@@ -2,8 +2,7 @@
 
 from __future__ import annotations
 
-from griffe.extensions import Extensions
-from griffe.tests import temporary_visited_package
+from griffe import Extensions, temporary_visited_package
 
 from griffe_inherited_docstrings import InheritDocstringsExtension
 

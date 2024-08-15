@@ -3,10 +3,9 @@
 from __future__ import annotations
 
 import contextlib
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Any
 
-from griffe import Extension
-from griffe.exceptions import AliasResolutionError
+from griffe import AliasResolutionError, Extension
 
 if TYPE_CHECKING:
     from griffe import Docstring, Module, Object
@@ -40,6 +39,6 @@ def _inherit_docstrings(obj: Object) -> None:
 class InheritDocstringsExtension(Extension):
     """Griffe extension for inheriting docstrings."""
 
-    def on_package_loaded(self, *, pkg: Module) -> None:
+    def on_package_loaded(self, *, pkg: Module, **kwargs: Any) -> None:  # noqa: ARG002
         """Inherit docstrings from parent classes once the whole package is loaded."""
         _inherit_docstrings(pkg)
