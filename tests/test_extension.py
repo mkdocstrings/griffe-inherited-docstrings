@@ -8,13 +8,13 @@ import pytest
 from griffe import Extensions, temporary_visited_package
 
 from griffe_inherited_docstrings import InheritDocstringsExtension
-from griffe_inherited_docstrings.extension import DocstringInheritStrategy
 
 
-@pytest.fixture(params=[
-    (
-        "Method docstrings",
-        """
+@pytest.fixture(
+    params=[
+        (
+            "Method docstrings",
+            """
         class Obj: # just to verify that additional parent classes don't affect the result
             ...
 
@@ -33,11 +33,11 @@ from griffe_inherited_docstrings.extension import DocstringInheritStrategy
                 {docstring_sub}
                 ...
         """,
-        lambda package, class_: package[f"{class_}.base"].docstring,
-    ),
-    (
-        "Attribute docstrings",
-        """
+            lambda package, class_: package[f"{class_}.base"].docstring,
+        ),
+        (
+            "Attribute docstrings",
+            """
         class Obj:
             ...
 
@@ -54,12 +54,13 @@ from griffe_inherited_docstrings.extension import DocstringInheritStrategy
             attr: int
             {docstring_sub}
         """,
-        lambda package, class_: package[class_].members["attr"].docstring,
-    ),
-
-])
-def content(request: pytest.FixtureRequest) -> tuple[str, str, Callable]:
+            lambda package, class_: package[class_].members["attr"].docstring,
+        ),
+    ],
+)
+def content(request: pytest.FixtureRequest) -> tuple[str, str, Callable]: # noqa: D103
     return request.param
+
 
 @pytest.mark.parametrize(
     ("merge_docstrings", "docstrings_list", "expected_docstrings_list"),
@@ -82,7 +83,10 @@ def content(request: pytest.FixtureRequest) -> tuple[str, str, Callable]:
     ],
 )
 def test_inherit_docstrings(
-    merge_docstrings: DocstringInheritStrategy, docstrings_list: list[str], expected_docstrings_list: list[str], content: tuple[str, str, Callable]
+    merge_docstrings: bool,
+    docstrings_list: list[str],
+    expected_docstrings_list: list[str],
+    content: tuple[str, str, Callable],
 ) -> None:
     """Test the inheritance strategies of docstrings for members.
 
@@ -97,11 +101,17 @@ def test_inherit_docstrings(
 
     with temporary_visited_package(
         "package",
-        modules={"__init__.py": code.format(docstring_base=docstring_base, docstring_main=docstring_main, docstring_sub=docstring_sub)},
+        modules={
+            "__init__.py": code.format(
+                docstring_base=docstring_base, docstring_main=docstring_main, docstring_sub=docstring_sub,
+            ),
+        },
         extensions=Extensions(InheritDocstringsExtension(merge_docstrings=merge_docstrings)),
     ) as package:
         classes = ["Base", "Main", "Sub"]
         docstrings = [get_docstring(package, class_) for class_ in classes]
         docstring_values = [docstring.value if docstring else None for docstring in docstrings]
 
-        assert docstring_values == expected_docstrings_list, f"Failed for merge='{merge_docstrings}' during testing '{to_test}'"
+        assert (
+            docstring_values == expected_docstrings_list
+        ), f"Failed for merge='{merge_docstrings}' during testing '{to_test}'"
