@@ -42,8 +42,12 @@ plugins:
       python:
         options:
           extensions:
-          - griffe_inherited_docstrings
+          - griffe_inherited_docstrings:
+            merge: False
 ```
 
 The extension will iterate on every class and their members
 to set docstrings from parent classes when they are not already defined.
+
+If you want to merge docstrings of members from parent classes,
+you can set the `merge` option to `True`.

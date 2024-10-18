@@ -20,6 +20,7 @@ nav:
   - Credits: credits.md
   - License: license.md
 # defer to gen-files + literate-nav
+- Configuration: configuration.md
 - API reference:
   - Griffe Inherited Docstrings: reference/
 - Development:
@@ -81,9 +82,13 @@ markdown_extensions:
 - admonition
 - callouts
 - footnotes
-- pymdownx.emoji:
-    emoji_index: !!python/name:material.extensions.emoji.twemoji
-    emoji_generator: !!python/name:material.extensions.emoji.to_svg
+- pymdownx.blocks.admonition
+- pymdownx.blocks.details
+- pymdownx.blocks.tab:
+    alternate_style: true
+    slugify: !!python/object/apply:pymdownx.slugs.slugify
+      kwds:
+        case: lower
 - pymdownx.magiclink
 - pymdownx.snippets:
     base_path: [!relative $config_dir]
