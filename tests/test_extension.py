@@ -10,108 +10,83 @@ from griffe import Extensions, temporary_visited_package
 from griffe_inherited_docstrings import InheritDocstringsExtension
 
 
-@pytest.fixture(
-    params=[
-        (
-            "Method docstrings",
-            """
-        class Obj: # just to verify that additional parent classes don't affect the result
-            ...
-
-        class Base(Obj):
-            def base(self):
-                {docstring_base} # Without triple quotes so we can control between empty docstring and no docstring.
-                ...
-
-        class Main(Base):
-            def base(self):
-                {docstring_main}
-                ...
-
-        class Sub(Main):
-            def base(self):
-                {docstring_sub}
-                ...
-        """,
-            lambda package, class_: package[f"{class_}.base"].docstring,
-        ),
-        (
-            "Attribute docstrings",
-            """
-        class Obj:
-            ...
-
-        class Base(Obj):
-            attr: int
-            {docstring_base}
-
-        class Main(Base):
-            attr: int
-            {docstring_main}
-
-
-        class Sub(Main):
-            attr: int
-            {docstring_sub}
-        """,
-            lambda package, class_: package[class_].members["attr"].docstring,
-        ),
-    ],
-)
-def content(request: pytest.FixtureRequest) -> tuple[str, str, Callable]: # noqa: D103
-    return request.param
-
-
-@pytest.mark.parametrize(
-    ("merge_docstrings", "docstrings_list", "expected_docstrings_list"),
-    [
-        (
-            False,
-            ['"""base"""', '"""main"""', ""],
-            ["base", "main", "main"],
-        ),  # main: stays the same (no merge); sub: main is taken (not base)
-        (
-            True,
-            ['"""base"""', '"""main"""', ""],
-            ["base", "base\n\nmain", "base\n\nmain"],
-        ),  # main: is merged with base; sub: empty is merged with base\n\nmain (not base\n\nmain\n\n)
-        (
-            True,
-            ["", '"""main"""', '"""sub"""'],
-            [None, "main", "main\n\nsub"],
-        ),  # Base class has no docstring after merging (as opposed to an empty one)
-    ],
-)
-def test_inherit_docstrings(
-    merge_docstrings: bool,
-    docstrings_list: list[str],
-    expected_docstrings_list: list[str],
-    content: tuple[str, str, Callable],
-) -> None:
-    """Test the inheritance strategies of docstrings for members.
-
-    Parameters:
-        strategy: The docstring inheritance strategy to use.
-        docstrings_list: The list of docstrings for the base, main, and sub classes. Needs triple quotes.
-        expected_docstrings_list: The expected list of docstrings for the base, main, and sub classes. Just the content, i.e. without triple quotes. None for no docstring at all.
-    """
-    docstring_base, docstring_main, docstring_sub = docstrings_list
-
-    to_test, code, get_docstring = content
-
+def test_inherit_docstrings() -> None:
+    """Inherit docstrings from parent classes."""
     with temporary_visited_package(
         "package",
         modules={
-            "__init__.py": code.format(
-                docstring_base=docstring_base, docstring_main=docstring_main, docstring_sub=docstring_sub,
-            ),
+            "__init__.py": """
+                class Parent:
+                    def method(self):
+                        '''Docstring from parent method.'''
+                class Child(Parent):
+                    def method(self):
+                        ...
+            """,
         },
-        extensions=Extensions(InheritDocstringsExtension(merge_docstrings=merge_docstrings)),
+        extensions=Extensions(InheritDocstringsExtension()),
     ) as package:
-        classes = ["Base", "Main", "Sub"]
-        docstrings = [get_docstring(package, class_) for class_ in classes]
-        docstring_values = [docstring.value if docstring else None for docstring in docstrings]
+        assert package["Child.method"].docstring.value == package["Parent.method"].docstring.value
 
-        assert (
-            docstring_values == expected_docstrings_list
-        ), f"Failed for merge='{merge_docstrings}' during testing '{to_test}'"
+
+def test_inherit_and_merge_docstrings() -> None:
+    """Inherit and merge docstrings from parent classes."""
+    attr_doc = "Attribute docstring from class"
+    meth_doc = "Method docstring from class"
+    code = f"""
+    # Base docstrings.
+    class A:
+        attr = 42
+        '''{attr_doc} A.'''
+
+        def meth(self):
+            '''{meth_doc} A.'''
+
+
+    # Redeclare members but without docstrings.
+    class B(A):
+        attr = 42
+
+        def meth(self):
+            ...
+    
+
+    # Redeclare members but with empty docstrings.
+    class C(B):
+        attr = 42
+        ''''''
+
+        def meth(self):
+            ''''''
+    
+
+    # Redeclare members with docstrings.
+    class D(C):
+        attr = 42
+        '''{attr_doc} D.'''
+
+        def meth(self):
+            '''{meth_doc} D.'''
+
+
+    # Redeclare members with docstrings again.
+    class E(D):
+        attr = 42
+        '''{attr_doc} E.'''
+
+        def meth(self):
+            '''{meth_doc} E.'''
+    """
+    with temporary_visited_package(
+        "package",
+        modules={"__init__.py": code},
+        extensions=Extensions(InheritDocstringsExtension(merge=True)),
+    ) as package:
+        assert package["B.attr"].docstring.value == package["A.attr"].docstring.value
+        assert package["B.meth"].docstring.value == package["A.meth"].docstring.value
+        assert package["C.attr"].docstring.value == package["A.attr"].docstring.value
+        assert package["C.meth"].docstring.value == package["A.meth"].docstring.value
+        assert package["D.attr"].docstring.value == package["A.attr"].docstring.value + "\n\n" + f"{attr_doc} D."
+        assert package["D.meth"].docstring.value == package["A.meth"].docstring.value + "\n\n" + f"{meth_doc} D."
+        assert package["E.attr"].docstring.value == package["D.attr"].docstring.value + "\n\n" + f"{attr_doc} E."
+        assert package["E.meth"].docstring.value == package["D.meth"].docstring.value + "\n\n" + f"{meth_doc} E."
