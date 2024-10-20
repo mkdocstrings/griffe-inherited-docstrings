@@ -2,9 +2,6 @@
 
 from __future__ import annotations
 
-from typing import Callable
-
-import pytest
 from griffe import Extensions, temporary_visited_package
 
 from griffe_inherited_docstrings import InheritDocstringsExtension
@@ -49,7 +46,7 @@ def test_inherit_and_merge_docstrings() -> None:
 
         def meth(self):
             ...
-    
+
 
     # Redeclare members but with empty docstrings.
     class C(B):
@@ -58,7 +55,7 @@ def test_inherit_and_merge_docstrings() -> None:
 
         def meth(self):
             ''''''
-    
+
 
     # Redeclare members with docstrings.
     class D(C):
