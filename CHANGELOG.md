@@ -6,6 +6,18 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
 <!-- insertion marker -->
+## [1.1.0](https://github.com/mkdocstrings/griffe-inherited-docstrings/releases/tag/1.1.0) - 2024-10-25
+
+<small>[Compare with 1.0.1](https://github.com/mkdocstrings/griffe-inherited-docstrings/compare/1.0.1...1.1.0)</small>
+
+### Build
+
+- Drop support for Python 3.8 ([48370d6](https://github.com/mkdocstrings/griffe-inherited-docstrings/commit/48370d6d6cb9766bc28aca4c88144fd5f27d8300) by Timothée Mazzucotelli).
+
+### Features
+
+- Add `merge` option to merge docstrings downwards ([232fbb0](https://github.com/mkdocstrings/griffe-inherited-docstrings/commit/232fbb0a151eb58a34d4579881cc2bed8f689bbc) by thomasmarwitz). [Issue-2](https://github.com/mkdocstrings/griffe-inherited-docstrings/issues/2), [PR-3](https://github.com/mkdocstrings/griffe-inherited-docstrings/pull/3), Co-authored-by: Timothée Mazzucotelli <dev@pawamoy.fr>
+
 ## [1.0.1](https://github.com/mkdocstrings/griffe-inherited-docstrings/releases/tag/1.0.1) - 2024-08-15
 
 <small>[Compare with 1.0.0](https://github.com/mkdocstrings/griffe-inherited-docstrings/compare/1.0.0...1.0.1)</small>
