@@ -5,40 +5,74 @@ from __future__ import annotations
 import contextlib
 from typing import TYPE_CHECKING, Any
 
-from griffe import AliasResolutionError, Extension
+from griffe import AliasResolutionError, Docstring, Extension
 
 if TYPE_CHECKING:
-    from griffe import Docstring, Module, Object
+    from griffe import Module, Object
 
 
-def _inherited_docstring(obj: Object) -> Docstring | None:
-    for parent_class in obj.parent.mro():  # type: ignore[union-attr]
-        try:
-            if docstring := parent_class.members[obj.name].docstring:
-                return docstring
-        except KeyError:
-            pass
+def _docstring_above(obj: Object) -> Docstring | None:
+    with contextlib.suppress(IndexError, KeyError):
+        parent = obj.parent.mro()[0]  # type: ignore[union-attr]
+        return parent.members[obj.name].docstring
     return None
 
 
-def _inherit_docstrings(obj: Object) -> None:
+def _inherit_docstrings(obj: Object, *, merge: bool = False, seen: set[str] | None = None) -> None:
+    if seen is None:
+        seen = set()
+
+    if obj.path in seen:
+        return
+
+    seen.add(obj.path)
+
     if obj.is_module:
         for member in obj.members.values():
             if not member.is_alias:
                 with contextlib.suppress(AliasResolutionError):
-                    _inherit_docstrings(member)  # type: ignore[arg-type]
+                    _inherit_docstrings(member, merge=merge, seen=seen)  # type: ignore[arg-type]
+
     elif obj.is_class:
+        # Recursively handle top-most parents first.
+        # It means that we can just check the first parent
+        # when actually inheriting (and optionally merging) a docstring,
+        # since the docstrings of the other parents have already been inherited.
+        for parent in reversed(obj.mro()):  # type: ignore[attr-defined]
+            _inherit_docstrings(parent, merge=merge, seen=seen)
+
         for member in obj.members.values():
             if not member.is_alias:
-                if member.docstring is None and (inherited := _inherited_docstring(member)):  # type: ignore[arg-type]
-                    member.docstring = inherited
+                if docstring_above := _docstring_above(member):  # type: ignore[arg-type]
+                    if merge:
+                        if member.docstring is None:
+                            member.docstring = Docstring(
+                                docstring_above.value,
+                                parent=member,  # type: ignore[arg-type]
+                                parser=docstring_above.parser,
+                                parser_options=docstring_above.parser_options,
+                            )
+                        elif member.docstring.value:
+                            member.docstring.value = docstring_above.value + "\n\n" + member.docstring.value
+                        else:
+                            member.docstring.value = docstring_above.value
+                    elif member.docstring is None:
+                        member.docstring = docstring_above
                 if member.is_class:
-                    _inherit_docstrings(member)  # type: ignore[arg-type]
+                    _inherit_docstrings(member, merge=merge, seen=seen)  # type: ignore[arg-type]
 
 
 class InheritDocstringsExtension(Extension):
     """Griffe extension for inheriting docstrings."""
 
+    def __init__(self, *, merge: bool = False) -> None:
+        """Initialize the extension by setting the merge flag.
+
+        Parameters:
+            merge: Whether to merge the docstrings from the parent classes into the docstring of the member.
+        """
+        self.merge = merge
+
     def on_package_loaded(self, *, pkg: Module, **kwargs: Any) -> None:  # noqa: ARG002
         """Inherit docstrings from parent classes once the whole package is loaded."""
-        _inherit_docstrings(pkg)
+        _inherit_docstrings(pkg, merge=self.merge, seen=set())
