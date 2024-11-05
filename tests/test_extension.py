@@ -39,6 +39,7 @@ def test_inherit_and_merge_docstrings() -> None:
         def meth(self):
             '''{meth_doc} A.'''
 
+
     # Redeclare members but without docstrings.
     class B(A):
         attr = 42
@@ -89,7 +90,11 @@ def test_inherit_and_merge_docstrings() -> None:
 
 
 def test_inherit_and_merge_docstrings_intermediate_class() -> None:
-    """Inherit docstrings from parent classes."""
+    """Inherit and merge docstrings from parent classes with an intermediate class.
+
+    It is important that the intermediate class doesn't have the member for which
+    docstring inheritance should be performed.
+    """
     with temporary_visited_package(
         "package",
         modules={
