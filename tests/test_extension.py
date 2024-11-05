@@ -115,4 +115,4 @@ def test_inherit_and_merge_docstrings_intermediate_class() -> None:
         },
         extensions=Extensions(InheritDocstringsExtension(merge=True)),
     ) as package:
-        assert package["Child.method"].docstring.value == "Parent." + "\n\n" + "Child."
+        assert package["Child.method"].docstring.value == "Parent.\n\nChild."
