@@ -6,6 +6,14 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
 <!-- insertion marker -->
+## [1.1.1](https://github.com/mkdocstrings/griffe-inherited-docstrings/releases/tag/1.1.1) - 2024-11-05
+
+<small>[Compare with 1.1.0](https://github.com/mkdocstrings/griffe-inherited-docstrings/compare/1.1.0...1.1.1)</small>
+
+### Bug Fixes
+
+- Fix inheritance logic when intermediate class without member is present ([639ff80](https://github.com/mkdocstrings/griffe-inherited-docstrings/commit/639ff807c34edc25e1841626f8ac6f4b743e8539) by thomasmarwitz). [Issue-4](https://github.com/mkdocstrings/griffe-inherited-docstrings/issues/4), [PR-5](https://github.com/mkdocstrings/griffe-inherited-docstrings/pull/5), Co-authored-by: Timothée Mazzucotelli <dev@pawamoy.fr>
+
 ## [1.1.0](https://github.com/mkdocstrings/griffe-inherited-docstrings/releases/tag/1.1.0) - 2024-10-25
 
 <small>[Compare with 1.0.1](https://github.com/mkdocstrings/griffe-inherited-docstrings/compare/1.0.1...1.1.0)</small>
