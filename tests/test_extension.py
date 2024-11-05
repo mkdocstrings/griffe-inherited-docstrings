@@ -39,13 +39,9 @@ def test_inherit_and_merge_docstrings() -> None:
         def meth(self):
             '''{meth_doc} A.'''
 
-    class Intermediate(A):
-        # This shouldn't break the inherting of docstrings.
-        # See https://github.com/mkdocstrings/griffe-inherited-docstrings/issues/4
-        pass
 
     # Redeclare members but without docstrings.
-    class B(Intermediate):
+    class B(A):
         attr = 42
 
         def meth(self):
@@ -91,3 +87,32 @@ def test_inherit_and_merge_docstrings() -> None:
         assert package["D.meth"].docstring.value == package["A.meth"].docstring.value + "\n\n" + f"{meth_doc} D."
         assert package["E.attr"].docstring.value == package["D.attr"].docstring.value + "\n\n" + f"{attr_doc} E."
         assert package["E.meth"].docstring.value == package["D.meth"].docstring.value + "\n\n" + f"{meth_doc} E."
+
+
+def test_inherit_and_merge_docstrings_intermediate_class() -> None:
+    """Inherit and merge docstrings from parent classes with an intermediate class.
+
+    It is important that the intermediate class doesn't have the member for which
+    docstring inheritance should be performed.
+    """
+    with temporary_visited_package(
+        "package",
+        modules={
+            "__init__.py": """
+                class Parent:
+                    def method(self):
+                        '''Parent.'''
+
+                class Intermediate(Parent):
+                    # This shouldn't break the inherting of docstrings.
+                    # See https://github.com/mkdocstrings/griffe-inherited-docstrings/issues/4
+                    ...
+
+                class Child(Parent):
+                    def method(self):
+                        '''Child.'''
+            """,
+        },
+        extensions=Extensions(InheritDocstringsExtension(merge=True)),
+    ) as package:
+        assert package["Child.method"].docstring.value == "Parent." + "\n\n" + "Child."
