@@ -13,7 +13,7 @@ if TYPE_CHECKING:
 
 def _docstring_above(obj: Object) -> Docstring | None:
     with contextlib.suppress(IndexError, KeyError):
-        for parent in obj.parent.mro(): # type: ignore[union-attr]
+        for parent in obj.parent.mro():  # type: ignore[union-attr]
             # Fetch docstring from first parent that has the member
             if obj.name in parent.members:
                 return parent.members[obj.name].docstring
