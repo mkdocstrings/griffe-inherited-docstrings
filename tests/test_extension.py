@@ -39,9 +39,13 @@ def test_inherit_and_merge_docstrings() -> None:
         def meth(self):
             '''{meth_doc} A.'''
 
+    class Intermediate(A):
+        # This shouldn't break the inherting of docstrings.
+        # See https://github.com/mkdocstrings/griffe-inherited-docstrings/issues/4
+        pass
 
     # Redeclare members but without docstrings.
-    class B(A):
+    class B(Intermediate):
         attr = 42
 
         def meth(self):
