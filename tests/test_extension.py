@@ -105,7 +105,7 @@ def test_inherit_and_merge_docstrings_intermediate_class() -> None:
 
                 class Intermediate(Parent):
                     # This shouldn't break the inherting of docstrings.
-                    # See https://github.com/mkdocstrings/griffe-inherited-docstrings/issues/4
+                    # See https://github.com/mkdocstrings/griffe-inherited-docstrings/issues/4.
                     ...
 
                 class Child(Intermediate):

@@ -14,7 +14,7 @@ if TYPE_CHECKING:
 def _docstring_above(obj: Object) -> Docstring | None:
     with contextlib.suppress(IndexError, KeyError):
         for parent in obj.parent.mro():  # type: ignore[union-attr]
-            # Fetch docstring from first parent that has the member
+            # Fetch docstring from first parent that has the member.
             if obj.name in parent.members:
                 return parent.members[obj.name].docstring
     return None
@@ -37,7 +37,7 @@ def _inherit_docstrings(obj: Object, *, merge: bool = False, seen: set[str] | No
 
     elif obj.is_class:
         # Recursively handle top-most parents first.
-        # It means that we can just check the first parent
+        # It means that we can just check the first parent with the member
         # when actually inheriting (and optionally merging) a docstring,
         # since the docstrings of the other parents have already been inherited.
         for parent in reversed(obj.mro()):  # type: ignore[attr-defined]
