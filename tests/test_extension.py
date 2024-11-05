@@ -108,7 +108,7 @@ def test_inherit_and_merge_docstrings_intermediate_class() -> None:
                     # See https://github.com/mkdocstrings/griffe-inherited-docstrings/issues/4
                     ...
 
-                class Child(Parent):
+                class Child(Intermediate):
                     def method(self):
                         '''Child.'''
             """,
