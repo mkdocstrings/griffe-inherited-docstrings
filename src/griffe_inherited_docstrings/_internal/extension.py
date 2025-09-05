@@ -1,5 +1,3 @@
-"""The Griffe extension."""
-
 from __future__ import annotations
 
 import contextlib
@@ -74,6 +72,7 @@ class InheritDocstringsExtension(Extension):
             merge: Whether to merge the docstrings from the parent classes into the docstring of the member.
         """
         self.merge = merge
+        """Whether to merge the docstrings from the parent classes into the docstring of the member."""
 
     def on_package(self, *, pkg: Module, **kwargs: Any) -> None:  # noqa: ARG002
         """Inherit docstrings from parent classes once the whole package is loaded."""
