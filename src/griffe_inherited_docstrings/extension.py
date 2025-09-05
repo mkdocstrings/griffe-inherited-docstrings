@@ -75,6 +75,6 @@ class InheritDocstringsExtension(Extension):
         """
         self.merge = merge
 
-    def on_package_loaded(self, *, pkg: Module, **kwargs: Any) -> None:  # noqa: ARG002
+    def on_package(self, *, pkg: Module, **kwargs: Any) -> None:  # noqa: ARG002
         """Inherit docstrings from parent classes once the whole package is loaded."""
         _inherit_docstrings(pkg, merge=self.merge, seen=set())
