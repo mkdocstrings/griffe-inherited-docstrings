@@ -6,6 +6,18 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
 <!-- insertion marker -->
+## [1.1.2](https://github.com/mkdocstrings/griffe-inherited-docstrings/releases/tag/1.1.2) - 2025-09-05
+
+<small>[Compare with 1.1.1](https://github.com/mkdocstrings/griffe-inherited-docstrings/compare/1.1.1...1.1.2)</small>
+
+### Build
+
+- Depend on Griffe 1.14 ([3e39e7d](https://github.com/mkdocstrings/griffe-inherited-docstrings/commit/3e39e7dcac620de7524d4264ab6b9ca9ee10098c) by Timothée Mazzucotelli).
+
+### Code Refactoring
+
+- Move modules under internal folder ([aee4b19](https://github.com/mkdocstrings/griffe-inherited-docstrings/commit/aee4b19f8d13910721e3729d7702ec9672d468b6) by Timothée Mazzucotelli).
+
 ## [1.1.1](https://github.com/mkdocstrings/griffe-inherited-docstrings/releases/tag/1.1.1) - 2024-11-05
 
 <small>[Compare with 1.1.0](https://github.com/mkdocstrings/griffe-inherited-docstrings/compare/1.1.0...1.1.1)</small>
