@@ -50,7 +50,7 @@ PASTE TRACEBACK HERE
      redacting sensitive information. -->
 
 ```bash
-python -m griffe_inherited_docstrings.debug  # | xclip -selection clipboard
+python -m griffe_inherited_docstrings._internal.debug  # | xclip -selection clipboard
 ```
 
 PASTE MARKDOWN OUTPUT HERE
