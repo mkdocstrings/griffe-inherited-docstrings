@@ -1,7 +1,7 @@
 # Griffe Inherited Docstrings
 
 [![ci](https://github.com/mkdocstrings/griffe-inherited-docstrings/workflows/ci/badge.svg)](https://github.com/mkdocstrings/griffe-inherited-docstrings/actions?query=workflow%3Aci)
-[![documentation](https://img.shields.io/badge/docs-mkdocs-708FCC.svg?style=flat)](https://mkdocstrings.github.io/griffe-inherited-docstrings/)
+[![documentation](https://img.shields.io/badge/docs-zensical-FF9100.svg?style=flat)](https://mkdocstrings.github.io/griffe-inherited-docstrings/)
 [![pypi version](https://img.shields.io/pypi/v/griffe-inherited-docstrings.svg)](https://pypi.org/project/griffe-inherited-docstrings/)
 [![gitter](https://img.shields.io/badge/matrix-chat-4DB798.svg?style=flat)](https://app.gitter.im/#/room/#griffe-inherited-docstrings:gitter.im)
 
@@ -86,3 +86,8 @@ Class | Method docstring
 
 WARNING: **Limitation**
 This extension runs once on whole packages. There is no way to toggle merging or simple inheritance for specifc objects.
+
+## Sponsors
+
+<!-- sponsors-start -->
+<!-- sponsors-end -->
