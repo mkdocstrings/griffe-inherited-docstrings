@@ -85,7 +85,7 @@ Class | Method docstring
 `E`   | Method in A.<br><br>Method in D.<br><br>Method in E.
 
 WARNING: **Limitation**
-This extension runs once on whole packages. There is no way to toggle merging or simple inheritance for specifc objects.
+This extension runs once on whole packages. There is no way to toggle merging or simple inheritance for specific objects.
 
 ## Sponsors
 
