@@ -7,6 +7,12 @@
         <loc>https://mkdocstrings.github.io/griffe-inherited-docstrings/changelog/</loc>
       </url>
       <url>
+        <loc>https://mkdocstrings.github.io/griffe-inherited-docstrings/code_of_conduct/</loc>
+      </url>
+      <url>
+        <loc>https://mkdocstrings.github.io/griffe-inherited-docstrings/contributing/</loc>
+      </url>
+      <url>
         <loc>https://mkdocstrings.github.io/griffe-inherited-docstrings/credits/</loc>
       </url>
       <url>
@@ -14,11 +20,5 @@
       </url>
       <url>
         <loc>https://mkdocstrings.github.io/griffe-inherited-docstrings/reference/api/</loc>
-      </url>
-      <url>
-        <loc>https://mkdocstrings.github.io/griffe-inherited-docstrings/contributing/</loc>
-      </url>
-      <url>
-        <loc>https://mkdocstrings.github.io/griffe-inherited-docstrings/code_of_conduct/</loc>
       </url>
 </urlset>
