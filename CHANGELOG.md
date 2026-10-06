@@ -6,6 +6,14 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
 <!-- insertion marker -->
+## [1.1.4](https://github.com/mkdocstrings/griffe-inherited-docstrings/releases/tag/1.1.4) - 2026-10-06
+
+<small>[Compare with 1.1.3](https://github.com/mkdocstrings/griffe-inherited-docstrings/compare/1.1.3...1.1.4)</small>
+
+### Build
+
+- Drop support for Python 3.10 ([c8da8dc](https://github.com/mkdocstrings/griffe-inherited-docstrings/commit/c8da8dc2e341a1771c853c28b3126a54b9414457) by Timothée Mazzucotelli).
+
 ## [1.1.3](https://github.com/mkdocstrings/griffe-inherited-docstrings/releases/tag/1.1.3) - 2026-02-20
 
 <small>[Compare with 1.1.2](https://github.com/mkdocstrings/griffe-inherited-docstrings/compare/1.1.2...1.1.3)</small>
